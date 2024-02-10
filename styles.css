@@ -1,0 +1,94 @@
+body{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    background-color: rgb(228, 228, 228);
+}
+
+.title{
+    font-size: 30px;
+}
+
+.textContainer{
+    width: 280px;
+    height: 110px;
+    border-color: rgb(71, 69, 69);
+    border-style: solid;
+    border-radius: 15px;
+    border-width: 2px;
+    background-color: rgb(247, 246, 246);
+    margin: 0;
+    position: relative;
+}
+
+#input {
+    width: 80%;
+    padding: 10px;
+    margin: 12px;
+    outline: none;
+    background-color: rgb(247, 246, 246);
+    border: none;
+    font-size: 18px;   
+}
+
+.container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 0px;
+}
+
+.create{
+    width: 280px;
+    height: 35px;
+    background-color: rgb(71, 69, 69);
+    color: white;
+    border-radius: 12px;
+    border: none;
+    margin: 10px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.previousNotes{
+    width: 280px;
+    height: 110px;
+    border-color: rgb(71, 69, 69);
+    border-style: solid;
+    border-radius: 15px;
+    border-width: 2px;
+    background-color: rgb(247, 246, 246);
+    margin: 10px;
+    justify-content:space-between;
+    display: flex;
+    position: relative;
+}
+
+.noteText{
+    align-self: flex-start;    
+    justify-self: start;
+    margin: 12px;
+    font-size: 18px;
+    color: rgb(71, 69, 69);
+
+}
+
+.deleteButton{
+    height: 25px;
+    width: 90px;
+    margin: 12px;
+    font-weight: bold;
+    text-align: center;
+    border-radius: 25px;
+    border: none;
+    background-color: rgb(209, 209, 209);
+    color: rgb(71, 69, 69);
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+
+
