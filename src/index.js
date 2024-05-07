@@ -1,3 +1,5 @@
+import './style.css'
+
 const createButton = document.querySelector(".create");
 const notesContainer = document.querySelector(".notesContainer");
 const input = document.querySelector("#input");
@@ -5,6 +7,20 @@ let notesArray_deserialized = JSON.parse(localStorage.getItem("note"))
 let notesArray = notesArray_deserialized
 
 localStorage.getItem("note") != null ? getNotes () : notesArray = []
+
+// Crear array para projects y que cada project sea un array que tenga los todos correspondientes
+// Debe haber un projecto default al abrir
+//
+
+class Todos{
+    constructor(title, description, dueDate, priority){
+        this.title = title;
+        this.description = description;
+        this.dueDate = dueDate;
+        this.priority = priority;
+    }
+}
+
 
 function getNotes(){
     for (let i = 0; i < notesArray_deserialized.length; i++) {
@@ -24,7 +40,7 @@ function getNotes(){
         deleteButton.textContent = "Borrar";
         note.appendChild(deleteButton);
 
-        deleteButton .addEventListener('click', () => {
+        deleteButton.addEventListener('click', () => {
             const index = notesArray.indexOf(noteText.textContent);
             notesContainer.removeChild(note);
             notesArray.splice(index, 1);
@@ -36,34 +52,36 @@ function getNotes(){
     }
 }
 
-createButton.addEventListener('click',() => {
-    const note = document.createElement("div");
-    note.classList.add("previousNotes");
 
-    const text = input.value;
-    input.value = '';
-    notesArray.push(text);
-    const notesArray_serialized = JSON.stringify(notesArray)
+createButton.addEventListener('click', () => {
+    if (input.value != ''){   
+        const note = document.createElement("div");
+        note.classList.add("previousNotes");
 
-    const noteText = document.createElement("p");
-    noteText.textContent = text;
-    noteText.classList.add("noteText"); 
-    note.appendChild(noteText)
-
-    const deleteButton = document.createElement("button");
-    deleteButton.classList.add("deleteButton");
-    deleteButton.textContent = "Borrar";
-    note.appendChild(deleteButton);
-
-    localStorage.setItem("note", notesArray_serialized);
-
-    notesContainer.appendChild(note);
-    
-    deleteButton .addEventListener('click', () => {
-        const index = notesArray.indexOf(noteText.textContent);
-        notesContainer.removeChild(note);
-        notesArray.splice(index, 1);
+        const text = input.value;
+        input.value = '';
+        notesArray.push(text);
         const notesArray_serialized = JSON.stringify(notesArray)
+
+        const noteText = document.createElement("p");
+        noteText.textContent = text;
+        noteText.classList.add("noteText"); 
+        note.appendChild(noteText)
+
+        const deleteButton = document.createElement("button");
+        deleteButton.classList.add("deleteButton");
+        deleteButton.textContent = "Borrar";
+        note.appendChild(deleteButton);
+
         localStorage.setItem("note", notesArray_serialized);
-    })
-})
+
+        notesContainer.appendChild(note);
+        
+        deleteButton .addEventListener('click', () => {
+            const index = notesArray.indexOf(noteText.textContent);
+            notesContainer.removeChild(note);
+            notesArray.splice(index, 1);
+            const notesArray_serialized = JSON.stringify(notesArray)
+            localStorage.setItem("note", notesArray_serialized);
+        })
+    }})
