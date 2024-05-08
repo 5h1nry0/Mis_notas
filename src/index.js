@@ -4,16 +4,8 @@ import './style.css'
 const createButton = document.querySelector(".create");
 const toDoContainer = document.querySelector("#toDoContainer");
 const newProjectButton = document.querySelector("#new-project");
-const projectContainer = document.querySelector("#project-container");
+const projectsContainer = document.querySelector("#projects-container");
 
-
-let notesArray_deserialized = JSON.parse(localStorage.getItem("note"))
-let notesArray = notesArray_deserialized
-
-
-// Crear array para projects y que cada project sea un array que tenga los todos correspondientes
-// Debe haber un projecto default al abrir
-//
 class Project{
     constructor(name){
         this.name = name;
@@ -26,6 +18,12 @@ let general = new Project('general')
 let activeProject = general
 let projects = [general]
 
+function populateStorage(){
+    const projectsArray_serialized = JSON.stringify(projects);
+    localStorage.setItem("project", projectsArray_serialized);
+
+}
+
 class Todos{
     constructor(title, description, dueDate, priority){
         this.title = title;
@@ -37,7 +35,7 @@ class Todos{
 
 
 function getTodos(){
-    for (let i = 0; i < activeProject.length; i++) {
+    for (let i = 0; i < activeProject.todos.length; i++) {
         const todoCard = document.createElement("div");
         todoCard.classList.add("previousNotes");
 
@@ -97,15 +95,17 @@ createButton.addEventListener('click', () => {
     }
 
     else{
-        todoPusher(new Todos(title.value, description.value, dueDate.value, priority.value), activeProject)
+        todoPusher(new Todos(title.value, description.value, dueDate.value, priority.value), activeProject);
         getTodos()
         console.log(projects)
     }
 })
 
 function todoPusher(todo, project){
-    const index = projects.indexOf(project)
-    projects[index].todos.push(todo)
+    // const index = projects.indexOf(project);
+    // projects[index].todos.push(todo);
+    project.todos.push(todo);
+    populateStorage();
 }
 
 function messageLogger(message){
@@ -136,6 +136,8 @@ newProjectButton.addEventListener('click',() => {
         activeProject = projects[projects.length - 1];
         projectInput.value = '';
         console.log(activeProject);
+        inputContainer.removeChild(addProjectButton);
+        inputContainer.removeChild(projectInput);
     })
 })
 
@@ -144,58 +146,38 @@ function projectPusher(name){
     projects.push(new Project(name));
     // projects[name] = [];
     console.log(projects);
+    populateStorage();
+    getProjects();
 }
 
 
 
 function getProjects(){
-    projects.forEach((e)=>{
+    while (projectsContainer.firstChild) {
+        projectsContainer.removeChild(projectsContainer.lastChild);
+      }
+    const projectsArray_deserialized = JSON.parse(localStorage.getItem("project"));
+    projectsArray_deserialized.forEach((e)=>{
+        console.log(e)
         const projectCard = document.createElement("div");
-        projectContainer.appendChild(projectCard);
+        projectsContainer.appendChild(projectCard);
 
-        const projectTitle= document.createElement("p");
-        projectTitle.textContent = e.name;
+        const projectButton= document.createElement("button");
+        projectButton.textContent = e.name;
+        projectCard.appendChild(projectButton);
 
-
+        projectButton.addEventListener("click",()=>{
+            console.log(e)
+            activeProject = e;
+            console.log(activeProject.length)
+            getTodos()
+        })
     })
 }
 
 
-projectPusher(new Todos('hello', 'hello', 'hello', 'hello'), activeProject)
+todoPusher(new Todos('hello', 'hello', 'hello', 'hello'), activeProject)
 
 console.log(projects)
 console.log(activeProject)
 console.log(general)
-
-// createButton.addEventListener('click', () => {
-//     if (input.value != ''){   
-//         const note = document.createElement("div");
-//         note.classList.add("previousNotes");
-
-//         const text = input.value;
-//         input.value = '';
-//         notesArray.push(text);
-//         const notesArray_serialized = JSON.stringify(notesArray)
-
-//         const noteText = document.createElement("p");
-//         noteText.textContent = text;
-//         noteText.classList.add("noteText"); 
-//         note.appendChild(noteText)
-
-//         const deleteButton = document.createElement("button");
-//         deleteButton.classList.add("deleteButton");
-//         deleteButton.textContent = "Borrar";
-//         note.appendChild(deleteButton);
-
-//         localStorage.setItem("note", notesArray_serialized);
-
-//         notesContainer.appendChild(note);
-        
-//         deleteButton .addEventListener('click', () => {
-//             const index = notesArray.indexOf(noteText.textContent);
-//             notesContainer.removeChild(note);
-//             notesArray.splice(index, 1);
-//             const notesArray_serialized = JSON.stringify(notesArray)
-//             localStorage.setItem("note", notesArray_serialized);
-//         })
-//     }})
