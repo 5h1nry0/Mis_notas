@@ -6,13 +6,26 @@
     <title>To do App</title>
 </head>
 <body>
-    <div class="container"></div>
-        <h1 class="title"> To do App </h1>
-        <div class="textContainer">
-            <input type="text" name="input" id="input" placeholder="Something to do...">
+    <div class="rootContainer"></div>
+        <h1> To do App </h1>
+        <div id="toDoContainer">
+            <input type="text" name="title" id="title" placeholder="Something to do...">
+            <input type="text" name="description" id="description" placeholder="Add a description">
+            <label for="dueDate">Due date:</label>
+            <input type="date" name="dueDate" id="dueDate">
+            <label for="priority">Set priority:</label>
+            <select id="priority" name="priority">
+              <option value="urgent">Urgent</option>
+              <option value="important">Important</option>
+              <option value="low">Low priority</option>
+              <option value="done">Done</option>
+            </select>
+            <button class="create">Create</button>   
         </div>
-        <button class="create">Create</button>   
-        <div class="notesContainer"></div>
+        <button id="new-project">New Project</button>
+        <div id="notes-container"></div>
+        <div id="projects-container"></div>
+
 
 </body>
 </html>
