@@ -1,10 +1,12 @@
 import { forEach, indexOf } from 'lodash';
 import './style.css'
 
-const createButton = document.querySelector(".create");
-const toDoContainer = document.querySelector("#toDoContainer");
+const createTodoButton = document.querySelector("#create");
+const toDoContainer = document.querySelector("#todo-container");
 const newProjectButton = document.querySelector("#new-project");
 const projectsContainer = document.querySelector("#projects-container");
+const newProjectContainer = document.querySelector("#new-project-container");
+
 
 class Project{
     constructor(name){
@@ -35,28 +37,30 @@ class Todos{
 
 
 function getTodos(){
+    toDoContainer.textContent = '';
+
     for (let i = 0; i < activeProject.todos.length; i++) {
         const todoCard = document.createElement("div");
-        todoCard.classList.add("previousNotes");
+        todoCard.classList.add("todo-card");
 
         const title = document.createElement("h4"); 
         title.classList.add("title"); 
-        title.textContent = activeProject[i].title;
+        title.textContent = activeProject.todos[i].title;
         todoCard.appendChild(title);  
 
         const description = document.createElement("p"); 
         description.classList.add("description"); 
-        description.textContent = activeProject[i].description;
+        description.textContent = activeProject.todos[i].description;
         todoCard.appendChild(description);  
 
         const dueDate = document.createElement("p"); 
         dueDate.classList.add("dueDate"); 
-        dueDate.textContent = activeProject[i].dueDate;
+        dueDate.textContent = activeProject.todos[i].dueDate;
         todoCard.appendChild(dueDate);  
 
         const priority = document.createElement("p"); 
         priority.classList.add("priority"); 
-        priority.textContent = activeProject[i].priority;
+        priority.textContent = activeProject.todos[i].priority;
         todoCard.appendChild(priority);  
 
         const deleteButton = document.createElement("button");
@@ -67,9 +71,9 @@ function getTodos(){
         toDoContainer.appendChild(todoCard);
 
         deleteButton.addEventListener('click', () => {
-            const index = activeProject.indexOf(title);
+            const index = activeProject.todos.indexOf([i].title);
             toDoContainer.removeChild(todoCard);
-            activeProject.splice(index, 1);
+            activeProject.todos.splice(index, 1);
             console.log(activeProject)
         })
 
@@ -80,11 +84,12 @@ function getTodos(){
     }
 }
 
-createButton.addEventListener('click', () => {
+createTodoButton.addEventListener('click', () => {
     const title = document.querySelector("#title");
     const description = document.querySelector("#description");
     const dueDate = document.querySelector("#dueDate");
     const priority = document.querySelector("#priority");
+    const todoForm = document.getElementById("todo-form")
 
     if (title.value == ''){
         return messageLogger("Add a title")
@@ -96,8 +101,10 @@ createButton.addEventListener('click', () => {
 
     else{
         todoPusher(new Todos(title.value, description.value, dueDate.value, priority.value), activeProject);
-        getTodos()
-        console.log(projects)
+        getTodos();
+        todoForm.reset();
+        console.log(activeProject);
+        console.log(projects);
     }
 })
 
@@ -112,13 +119,24 @@ function messageLogger(message){
     alert(message)
 }
 
+newProjectButton.addEventListener("mouseover",()=>{
+    newProjectButton.classList.add("toggle-button");
+    newProjectButton.textContent = "New project";
+})
+
+newProjectButton.addEventListener("mouseout",()=>{
+    newProjectButton.classList.remove("toggle-button");
+    newProjectButton.textContent = "+";
+})
+
+
+
 newProjectButton.addEventListener('click',() => {
-    console.log(projects)
-    const notesContainer = document.querySelector("#notes-container")
+    newProjectContainer.textContent = ''
 
     const inputContainer = document.createElement("div");
     inputContainer.classList.add("input-container");
-    notesContainer.appendChild(inputContainer)
+    newProjectContainer.appendChild(inputContainer)
 
     const projectInput = document.createElement("input");
     projectInput.setAttribute("type","text");
@@ -132,12 +150,17 @@ newProjectButton.addEventListener('click',() => {
 
     addProjectButton.addEventListener("click",()=>{
         const projectName = document.querySelector("#project-input");
+        
+        if(projectName.value==''){
+            return messageLogger("Add a project name")}        
+        else{
         projectPusher(projectName.value);
         activeProject = projects[projects.length - 1];
         projectInput.value = '';
         console.log(activeProject);
         inputContainer.removeChild(addProjectButton);
         inputContainer.removeChild(projectInput);
+        }
     })
 })
 

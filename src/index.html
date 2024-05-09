@@ -6,25 +6,34 @@
     <title>To do App</title>
 </head>
 <body>
-    <div class="rootContainer"></div>
         <h1> To do App </h1>
-        <div id="toDoContainer">
-            <input type="text" name="title" id="title" placeholder="Something to do...">
-            <input type="text" name="description" id="description" placeholder="Add a description">
-            <label for="dueDate">Due date:</label>
-            <input type="date" name="dueDate" id="dueDate">
-            <label for="priority">Set priority:</label>
-            <select id="priority" name="priority">
-              <option value="urgent">Urgent</option>
-              <option value="important">Important</option>
-              <option value="low">Low priority</option>
-              <option value="done">Done</option>
-            </select>
-            <button class="create">Create</button>   
+        <div id="root-container">
+            <div id="left-side">
+                <button id="new-project">+</button>
+                <div id="new-project-container"></div>
+                <div id="projects-container"></div>
+            </div>
+            <div id="right-side">
+                <div id="form-container">
+                    <form id="todo-form">
+                        <input type="text" name="title" id="title" placeholder="Something to do...">
+                        <input type="text" name="description" id="description" placeholder="Add a description">
+                        <label for="dueDate">Due date:</label>
+                        <input type="date" name="dueDate" id="dueDate">
+                        <label for="priority">Set priority:</label>
+                        <select id="priority" name="priority">
+                            <option value="urgent">Urgent</option>
+                            <option value="important">Important</option>
+                            <option value="low">Low priority</option>
+                            <option value="done">Done</option>
+                        </select>
+                    </form>   
+                    <button id="create">Create</button>
+                </div>
+                <div id="todo-container"></div>
+            </div>
         </div>
-        <button id="new-project">New Project</button>
-        <div id="notes-container"></div>
-        <div id="projects-container"></div>
+
 
 
 </body>
