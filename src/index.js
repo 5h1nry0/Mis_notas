@@ -16,7 +16,7 @@ class Project{
 }
 
 
-let general = new Project('general')
+let general = new Project('General')
 let activeProject = general
 let projects = [general]
 
@@ -42,33 +42,63 @@ function getTodos(){
     for (let i = 0; i < activeProject.todos.length; i++) {
         const todoCard = document.createElement("div");
         todoCard.classList.add("todo-card");
+        toDoContainer.appendChild(todoCard);
 
+        const priority = document.createElement("p"); 
+        priority.classList.add("priority");
+        priority.textContent = activeProject.todos[i].priority;
+        todoCard.appendChild(priority);  
+
+        switch (priority.textContent){
+            case "Urgent":
+                priority.classList.add("urgent");
+                break;
+            case "Important":
+                priority.classList.add("important");
+                break;
+            case "Low":
+                priority.classList.add("low");
+                break;
+            case "Done":
+                priority.classList.add("done")
+        }   
+
+        console.log(priority.textContent)
+        
         const title = document.createElement("h4"); 
         title.classList.add("title"); 
         title.textContent = activeProject.todos[i].title;
         todoCard.appendChild(title);  
 
-        const description = document.createElement("p"); 
-        description.classList.add("description"); 
-        description.textContent = activeProject.todos[i].description;
-        todoCard.appendChild(description);  
+        // const description = document.createElement("p"); 
+        // description.classList.add("description"); 
+        // description.textContent = activeProject.todos[i].description;
+        // todoCard.appendChild(description);  
 
         const dueDate = document.createElement("p"); 
         dueDate.classList.add("dueDate"); 
         dueDate.textContent = activeProject.todos[i].dueDate;
         todoCard.appendChild(dueDate);  
 
-        const priority = document.createElement("p"); 
-        priority.classList.add("priority"); 
-        priority.textContent = activeProject.todos[i].priority;
-        todoCard.appendChild(priority);  
+        const checklist = document.createElement("input");
+        checklist.setAttribute("type","checkbox");
+        checklist.setAttribute("value","done");
+        checklist.classList.add("checklist");
+        todoCard.appendChild(checklist)
+
+        checklist.addEventListener("click",() => {
+            if(checklist.checked == true){
+                title.classList.add("checked")
+            }
+            else{
+                title.classList.remove("checked")
+            }
+        })
 
         const deleteButton = document.createElement("button");
-        deleteButton.classList.add("deleteButton");
+        deleteButton.classList.add("delete-button");
         deleteButton.textContent = "delete";
         todoCard.appendChild(deleteButton);
-
-        toDoContainer.appendChild(todoCard);
 
         deleteButton.addEventListener('click', () => {
             const index = activeProject.todos.indexOf([i].title);
@@ -77,10 +107,6 @@ function getTodos(){
             console.log(activeProject)
         })
 
-        const checklist = document.createElement("input");
-        checklist.setAttribute("type","checkbox");
-        checklist.setAttribute("value","done");
-        checklist.classList.add("checklist");
     }
 }
 
@@ -135,7 +161,7 @@ newProjectButton.addEventListener('click',() => {
     newProjectContainer.textContent = ''
 
     const inputContainer = document.createElement("div");
-    inputContainer.classList.add("input-container");
+    inputContainer.setAttribute("id","input-container");
     newProjectContainer.appendChild(inputContainer)
 
     const projectInput = document.createElement("input");
@@ -145,7 +171,7 @@ newProjectButton.addEventListener('click',() => {
 
     const addProjectButton = document.createElement("button");
     addProjectButton.setAttribute("id","add-project");
-    addProjectButton.textContent = "Add project";
+    addProjectButton.textContent = "Add";
     inputContainer.appendChild(addProjectButton); 
 
     addProjectButton.addEventListener("click",()=>{
@@ -198,9 +224,24 @@ function getProjects(){
     })
 }
 
+function defaultUncheck(){
+    const inputs = document.getElementsByTagName('input');
 
-todoPusher(new Todos('hello', 'hello', 'hello', 'hello'), activeProject)
+    for (var i=0; i<inputs.length; i++)  {
+    if (inputs[i].type == 'checkbox')   {
+        inputs[i].checked = false;
+    }
+    }
+}
+
+
+
+todoPusher(new Todos('hello', 'hello', 'hello', 'Urgent'), activeProject)
 
 console.log(projects)
 console.log(activeProject)
 console.log(general)
+
+getProjects()
+getTodos()
+// document.addEventListener("load", defaultUncheck)

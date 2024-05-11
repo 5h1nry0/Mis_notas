@@ -26,7 +26,12 @@ button{
     padding: 10px;
     border-radius: 25px;
     border: 1px solid #F7A072;
+}
 
+button:active,
+button:hover {
+    background-color: #f9f7f3;
+    color: #F7A072;
 }
 
 #left-side,
@@ -37,7 +42,8 @@ button{
     padding: 15px;
     border: 3px solid #0FA3B1;
     border-radius: 15px;
-
+    display: flex;
+    flex-direction: column;
 }
 
 #form-container{
@@ -48,11 +54,6 @@ button{
         margin-left: 20px;
         text-align: center;
     }
-    #create:active,
-    #create:hover {
-        background-color: #f9f7f3;
-        color: #F7A072;
-    }
 }
 
 .toggle-button{
@@ -60,8 +61,69 @@ button{
     color: #F7A072;
 }
 
+#new-project{
+    align-self: flex-end;
+    margin-top: auto;
+}
 
+#input-container{
+    display: flex;
+    justify-content: space-around;
+    #add-project{
+        font-size: .7em;
+    }
+}
 
+#projects-container{
+    text-align: center;
+    button{
+        color: #0FA3B1;
+        background-color: #F9F7F3;
+        border: 1px solid #F9F7F3;
+    }
+    button:active,
+    button:hover {
+    color: #0FA3B1;
+    font-weight: bold;
+    border: 1px solid #0FA3B1;
+    }
+}
+
+.urgent,
+.important,
+.low,
+.done{
+    justify-self: center;
+    border: 1px solid none;
+    border-radius: 25px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    font-size: .8em;
+    font-weight: bold;
+}
+
+.urgent{
+    background-color: #ae2012 ;
+}
+
+.important{
+    background-color: #ee9b00;
+}
+
+.low{
+    background-color: #48cae4;
+}
+
+.done{
+    background-color: #52b788;
+}
+
+.checked{
+    text-decoration: line-through;
+    opacity: 50%;
+}
 
 .title{
     font-size: 30px;
@@ -92,9 +154,14 @@ button{
 .todo-card{
     width: 100%;
     height: fit-content;
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr 7fr 1fr 1fr 1fr;
 
+    align-items: center;
 
+    h4{
+        font-size: 1em;
+    }
 }
 .previousNotes{
     width: 280px;
@@ -119,19 +186,9 @@ button{
 
 }
 
-.deleteButton{
-    height: 25px;
-    width: 90px;
-    margin: 12px;
-    font-weight: bold;
+.delete-button{
     text-align: center;
-    border-radius: 25px;
-    border: none;
-    background-color: rgb(209, 209, 209);
-    color: rgb(71, 69, 69);
-    position: absolute;
-    bottom: 0;
-    right: 0;
+    font-size: .7em;
 }
 
 
