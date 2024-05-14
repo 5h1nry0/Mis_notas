@@ -1,6 +1,12 @@
 import { forEach, indexOf } from 'lodash';
 import './style.css'
 
+const { formatDistanceToNowStrict } = require("date-fns");
+const today = new Date();
+const formattedToday = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}T${String(today.getHours()).padStart(2, '0')}:${String(today.getMinutes()).padStart(2, '0')}`;
+
+
+
 const createTodoButton = document.querySelector("#create");
 const toDoContainer = document.querySelector("#todo-container");
 const newProjectButton = document.querySelector("#new-project");
@@ -25,6 +31,7 @@ function populateStorage(){
     localStorage.setItem("project", projectsArray_serialized);
 
 }
+
 
 class Todos{
     constructor(title, description, dueDate, priority){
@@ -62,8 +69,6 @@ function getTodos(){
             case "Done":
                 priority.classList.add("done")
         }   
-
-        console.log(priority.textContent)
         
         const title = document.createElement("h4"); 
         title.classList.add("title"); 
@@ -77,7 +82,13 @@ function getTodos(){
 
         const dueDate = document.createElement("p"); 
         dueDate.classList.add("dueDate"); 
-        dueDate.textContent = activeProject.todos[i].dueDate;
+        console.log(activeProject.todos[i].dueDate)
+        const formattedDate = formatDistanceToNowStrict(
+            new Date(activeProject.todos[i].dueDate)
+          )
+        // dueDate.textContent = activeProject.todos[i].dueDate;
+        dueDate.textContent = formattedDate;
+
         todoCard.appendChild(dueDate);  
 
         const checklist = document.createElement("input");
@@ -104,7 +115,6 @@ function getTodos(){
             const index = activeProject.todos.indexOf([i].title);
             toDoContainer.removeChild(todoCard);
             activeProject.todos.splice(index, 1);
-            console.log(activeProject)
         })
 
     }
@@ -115,9 +125,21 @@ createTodoButton.addEventListener('click', () => {
     const description = document.querySelector("#description");
     const dueDate = document.querySelector("#dueDate");
     const priority = document.querySelector("#priority");
-    const todoForm = document.getElementById("todo-form")
+    const todoForm = document.getElementById("todo-form");
+    dueDate.min = formattedToday;
+    console.log(dueDate.min)
 
-    if (title.value == ''){
+    const selectedDate = new Date(dueDate.value);
+    const formattedSelectedDate = `${selectedDate.getFullYear()}-${String(selectedDate.getMonth() + 1).padStart(2, '0')}-${String(selectedDate.getDate()).padStart(2, '0')}T${String(selectedDate.getHours()).padStart(2, '0')}:${String(selectedDate.getMinutes()).padStart(2, '0')}`;
+    console.log(formattedSelectedDate)
+    
+    
+    if (formattedSelectedDate < new Date(formattedToday)) {
+    alert('Please select a date equal to or after today.');
+         dueDate.value = formattedToday;
+    }
+    
+    else if (title.value == ''){
         return messageLogger("Add a title")
     }
 
@@ -129,8 +151,6 @@ createTodoButton.addEventListener('click', () => {
         todoPusher(new Todos(title.value, description.value, dueDate.value, priority.value), activeProject);
         getTodos();
         todoForm.reset();
-        console.log(activeProject);
-        console.log(projects);
     }
 })
 
@@ -183,7 +203,6 @@ newProjectButton.addEventListener('click',() => {
         projectPusher(projectName.value);
         activeProject = projects[projects.length - 1];
         projectInput.value = '';
-        console.log(activeProject);
         inputContainer.removeChild(addProjectButton);
         inputContainer.removeChild(projectInput);
         }
@@ -193,8 +212,6 @@ newProjectButton.addEventListener('click',() => {
 
 function projectPusher(name){
     projects.push(new Project(name));
-    // projects[name] = [];
-    console.log(projects);
     populateStorage();
     getProjects();
 }
@@ -207,7 +224,6 @@ function getProjects(){
       }
     const projectsArray_deserialized = JSON.parse(localStorage.getItem("project"));
     projectsArray_deserialized.forEach((e)=>{
-        console.log(e)
         const projectCard = document.createElement("div");
         projectsContainer.appendChild(projectCard);
 
@@ -216,31 +232,27 @@ function getProjects(){
         projectCard.appendChild(projectButton);
 
         projectButton.addEventListener("click",()=>{
-            console.log(e)
             activeProject = e;
-            console.log(activeProject.length)
             getTodos()
         })
     })
 }
 
-function defaultUncheck(){
-    const inputs = document.getElementsByTagName('input');
+// function defaultUncheck(){
+//     const inputs = document.getElementsByTagName('input');
 
-    for (var i=0; i<inputs.length; i++)  {
-    if (inputs[i].type == 'checkbox')   {
-        inputs[i].checked = false;
-    }
-    }
-}
+//     for (var i=0; i<inputs.length; i++)  {
+//     if (inputs[i].type == 'checkbox')   {
+//         inputs[i].checked = false;
+//     }
+//     }
+// }
 
 
 
-todoPusher(new Todos('hello', 'hello', 'hello', 'Urgent'), activeProject)
+// todoPusher(new Todos('hello', 'hello', 'hello', 'Urgent'), activeProject)
 
-console.log(projects)
-console.log(activeProject)
-console.log(general)
+
 
 getProjects()
 getTodos()
